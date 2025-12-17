@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway - Toko Klantong Nana</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .payment-box {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .payment-header {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .payment-header h2 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .payment-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .payment-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .payment-method {
+            border: 2px solid #e6f0ff;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: #4dabf7;
+            box-shadow: 0 5px 15px rgba(77, 171, 247, 0.1);
+        }
+        
+        .method-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .method-title i {
+            font-size: 1.8rem;
+        }
+        
+        .method-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eaeaea;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-icon {
+            color: #4dabf7;
+            font-size: 1.2rem;
+            width: 24px;
+        }
+        
+        .detail-text {
+            color: #555;
+            font-size: 1.05rem;
+        }
+        
+        .fee-free {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .qr-title {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .qr-container {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px dashed #4dabf7;
+            margin-bottom: 20px;
+        }
+        
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #e6f0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: #1e3c72;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .instructions {
+            background-color: #f0f7ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .instructions h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .highlight {
+            background-color: #e6f0ff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+        
+        .copy-btn {
+            background-color: #4dabf7;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #1e8be8;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-shopping-cart"></i> Toko Klantong Nana</h1>
+            <p>Lakukan pembayaran dengan metode di bawah ini</p>
+        </header>
+        
+        <div class="payment-box">
+            <div class="payment-header">
+                <h2><i class="fas fa-credit-card"></i> Metode Pembayaran</h2>
+            </div>
+            
+            <div class="payment-content">
+                <div class="payment-method">
+                    <div class="method-title">
+                        <i class="fas fa-wallet"></i>
+                        <h3>DANA</h3>
+                    </div>
+                    
+                    <div class="method-details">
+                        <div class="detail-item">
+                            <div class="detail-icon"></div>
+                            <div class="detail-text">
+                                <strong>Nomor:</strong> 
+                                <span class="highlight" id="dana-number">085169922985</span>
+                                <button class="copy-btn" data-copy="085169922985">
+                                    <i class="fas fa-copy"></i> Salin
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-icon">⩉</div>
+                            <div class="detail-text">
+                                <strong>a.n:</strong> no name
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-icon">⩉</div>
+                            <div class="detail-text">
+                                <strong>Biaya:</strong> 
+                                <span class="fee-free">- (tanpa biaya)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="payment-method">
+                    <div class="method-title">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>GoPay</h3>
+                    </div>
+                    
+                    <div class="method-details">
+                        <div class="detail-item">
+                            <div class="detail-icon"></div>
+                            <div class="detail-text">
+                                <strong>Nomor:</strong> 
+                                <span class="highlight" id="gopay-number">085169922985</span>
+                                <button class="copy-btn" data-copy="085169922985">
+                                    <i class="fas fa-copy"></i> Salin
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-icon">⩉</div>
+                            <div class="detail-text">
+                                <strong>a.n:</strong> TOKO KLANTONG NANA
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-icon">⩉</div>
+                            <div class="detail-text">
+                                <strong>Biaya:</strong> 
+                                <span class="fee-free">Tidak ada biaya!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="qr-section">
+                <h3 class="qr-title">
+                    <i class="fas fa-qrcode"></i> QRIS All Pay
+                </h3>
+                
+                <div class="qr-container">
+                    <div class="qr-placeholder">
+                        QR Code<br>
+                        https://aliceecdn.vercel.app/file/edca595dd4.jpg
+                    </div>
+                </div>
+                
+                <div class="method-details">
+                    <div class="detail-item">
+                        <div class="detail-icon">⩉</div>
+                        <div class="detail-text">
+                            <strong>a.n:</strong> TOKO KLANTONG NANA
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">⩉</div>
+                        <div class="detail-text">
+                            <strong>Biaya:</strong> 
+                            <span class="fee-free">- (tanpa biaya)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> Cara Pembayaran</h3>
+                <ol>
+                    <li>Pilih metode pembayaran yang diinginkan (DANA, GoPay, atau QRIS)</li>
+                    <li>Salin nomor untuk metode DANA/GoPay atau scan QRIS</li>
+                    <li>Lakukan transfer sesuai total pembayaran Anda</li>
+                    <li>Setelah transfer, kirim bukti pembayaran ke admin</li>
+                    <li>Pesanan akan diproses setelah pembayaran dikonfirmasi</li>
+                </ol>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Toko Klantong Nana. Semua hak dilindungi undang-undang.</p>
+            <p>Hubungi admin: 085169922985 (WhatsApp) untuk konfirmasi pembayaran</p>
+        </footer>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> Nomor berhasil disalin!
+    </div>
+
+    <script>
+        // Fungsi untuk menyalin nomor ke clipboard
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const number = this.getAttribute('data-copy');
+                
+                // Salin ke clipboard
+                navigator.clipboard.writeText(number).then(() => {
+                    // Tampilkan notifikasi
+                    const notification = document.getElementById('notification');
+                    notification.style.display = 'block';
+                    
+                    // Sembunyikan notifikasi setelah 3 detik
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 3000);
+                }).catch(err => {
+                    console.error('Gagal menyalin: ', err);
+                    alert(085169922985. Silakan salin secara manual.');
+                });
+            });
+        });
+        
+        // Efek hover untuk metode pembayaran
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            method.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
